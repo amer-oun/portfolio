@@ -8,17 +8,25 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#0d1117",
-        surface: "#161b22",
-        border: "#30363d",
-        ink: "#e6edf3",
-        muted: "#7d8590",
+        bg: "#0a0a0a",
+        surface: "#141414",
+        border: "#262626",
+        ink: "#f5f5f5",
+        muted: "#a3a3a3",
         accent: "#00E599",
         warn: "#f0883e",
         err: "#f85149",
         link: "#58a6ff",
       },
       fontFamily: {
+        sans: [
+          "Inter",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Segoe UI",
+          "Roboto",
+          "sans-serif",
+        ],
         mono: [
           "JetBrains Mono",
           "Fira Code",

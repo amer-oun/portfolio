@@ -1,8 +1,11 @@
-# amer-oun.vercel.app — Terminal Portfolio
+# amer-oun.vercel.app — Portfolio
 
-Interactive terminal-emulator portfolio. Type `help` on the site to explore.
+Personal portfolio and interactive terminal. Built with Next.js 15 · TypeScript · Tailwind CSS.
 
-Built with Next.js 15 · React 19 · TypeScript · Tailwind CSS. Deploys to Vercel.
+## Structure
+
+- `/` — main portfolio (hero, work, about, skills, contact)
+- `/terminal` — interactive terminal emulator (type `help` to explore)
 
 ## Local development
 
@@ -15,16 +18,14 @@ Open http://localhost:3000
 
 ## Deploy
 
-1. Push this repo to GitHub as `amer-oun/portfolio`
-2. Import into https://vercel.com → New Project → pick the repo → Deploy
-3. Add a custom domain later if you want (Vercel → Settings → Domains)
+Deploys automatically to Vercel on push to `main`.
 
 ## Customize
 
-- **Content**: edit `lib/data.ts` — profile, projects, skills, boot lines.
-- **Commands**: add cases in `components/Terminal.tsx` → `runCommand()`.
-- **Colors**: `tailwind.config.ts` → `theme.extend.colors`.
-- **Boot animation speed**: `components/Terminal.tsx` → `setTimeout(r, 120)` in the boot `useEffect`.
+- **Content**: `lib/data.ts` — profile, projects, skills, boot lines
+- **Main page**: `app/page.tsx`
+- **Terminal commands**: `components/Terminal.tsx` → `runCommand()`
+- **Colors**: `tailwind.config.ts` → `theme.extend.colors`
 
 ## License
 

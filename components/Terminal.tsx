@@ -214,9 +214,11 @@ export default function Terminal() {
     append({ kind: "accent", content: match.name });
     append({ kind: "muted", content: match.pitch });
     append({ kind: "muted", content: "" });
-    for (const l of match.description) {
-      append({ kind: "out", content: `  ${l}` });
-    }
+    append({ kind: "accent", content: "  problem:" });
+    append({ kind: "out", content: `  ${match.problem}` });
+    append({ kind: "muted", content: "" });
+    append({ kind: "accent", content: "  solution:" });
+    append({ kind: "out", content: `  ${match.solution}` });
     append({ kind: "muted", content: "" });
     append({
       kind: "muted",

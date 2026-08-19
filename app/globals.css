@@ -5,9 +5,12 @@
 /*
   Palette anchor: orange is the APWA utility-locate colour for telecommunications
   — the paint sprayed on a pavement before anyone digs toward a fibre duct.
-  Amer's work is field operations for Tunisian telecom, so the brand colour is
-  taken from the job site rather than from a flag or a code editor.
-  Surfaces are daylight: a dispatcher reads these screens at 8am, not at 2am.
+  Amer's work is field operations for Tunisian telecom, so the brand colour comes
+  from the job site.
+
+  Strategy is Committed, not accent-on-white: orange owns two whole folds (the
+  hero and the close), ink owns a third, and the work sections are the quiet
+  paper in between. The page should be recognisable from a thumbnail.
 */
 :root {
   color-scheme: light;
@@ -19,14 +22,21 @@
   --ink-soft: oklch(0.34 0.012 55);
   --muted: oklch(0.44 0.01 55);
   --border: oklch(0.895 0.005 55);
-  --brand: oklch(0.66 0.185 47);
+
+  /* Drenched surface. Ink type on this hits ~5.7:1. */
+  --brand: oklch(0.72 0.185 55);
+  --brand-ink: oklch(0.17 0.02 50);
+  /* Accent type on paper. ~4.7:1 — safe for body-size links. */
   --brand-deep: oklch(0.46 0.15 45);
+  --brand-bright: oklch(0.66 0.185 47);
   --brand-soft: oklch(0.955 0.032 62);
+
   --warn: oklch(0.72 0.15 70);
   --err: oklch(0.58 0.19 25);
   --link: oklch(0.46 0.15 45);
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 
   --z-sticky: 100;
   --z-overlay: 200;
@@ -45,13 +55,25 @@
   --border: oklch(0.312 0.008 55);
   --brand: oklch(0.76 0.155 58);
   --brand-deep: oklch(0.76 0.155 58);
+  --brand-bright: oklch(0.76 0.155 58);
   --brand-soft: oklch(0.28 0.05 55);
   --link: oklch(0.75 0.11 240);
 }
 
+/* Lenis drives the scroll; the native smooth behaviour would fight it. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
 html {
   scroll-behavior: smooth;
-  /* the sticky bar must not sit on top of the section it just scrolled to */
   scroll-padding-top: 5.5rem;
 }
 
@@ -70,32 +92,53 @@ body {
 
 ::selection {
   background: var(--brand);
-  color: var(--paper);
+  color: var(--brand-ink);
 }
 
-/* ── Reveal ────────────────────────────────────────────────────────────────
-   Content is visible by default. The hidden state is applied by JS only after
-   hydration, so a headless renderer, a crawler, or a JS failure still sees a
-   complete page instead of a blank one.                                      */
+/* ── Scroll progress ──────────────────────────────────────────────────── */
+.scroll-progress {
+  transform-origin: 0 50%;
+  transform: scaleX(var(--progress, 0));
+  will-change: transform;
+}
+
+/* ── Reveal ────────────────────────────────────────────────────────────
+   Visible by default. The hidden state is applied by JS only after hydration,
+   so server output and no-JS browsers still render a complete page.        */
 [data-reveal="pending"] {
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(28px);
+}
+
+[data-reveal="pending"][data-variant="rise-lg"] {
+  transform: translateY(56px);
+}
+
+[data-reveal="pending"][data-variant="scale"] {
+  transform: translateY(32px) scale(0.965);
+}
+
+[data-reveal="pending"][data-variant="wipe"] {
+  clip-path: inset(0 0 100% 0);
+  transform: none;
 }
 
 [data-reveal="shown"] {
   opacity: 1;
   transform: none;
+  clip-path: inset(0 0 0 0);
   transition:
-    opacity 0.7s var(--ease-out-expo),
-    transform 0.7s var(--ease-out-expo);
+    opacity 0.85s var(--ease-out-expo),
+    transform 0.95s var(--ease-out-expo),
+    clip-path 0.95s var(--ease-out-expo);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
-/* Hero choreography: runs once on load, distinct from the scroll reveals. */
+/* ── Hero load choreography ───────────────────────────────────────────── */
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(26px);
   }
   to {
     opacity: 1;
@@ -104,7 +147,28 @@ body {
 }
 
 .rise {
-  animation: rise 0.9s var(--ease-out-expo) both;
+  animation: rise 1s var(--ease-out-expo) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+
+/* Headline lines climb out from behind a mask. */
+.line-mask {
+  overflow: hidden;
+  display: block;
+}
+
+@keyframes line-up {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.line-inner {
+  display: block;
+  animation: line-up 1.1s var(--ease-out-expo) both;
   animation-delay: var(--rise-delay, 0ms);
 }
 
@@ -119,18 +183,17 @@ body {
 
 .rule-draw {
   transform-origin: left;
-  animation: draw 1.1s var(--ease-out-expo) both;
+  animation: draw 1.2s var(--ease-out-expo) both;
   animation-delay: var(--rise-delay, 0ms);
 }
 
-/* The status dot on a live project. */
 @keyframes ping-soft {
   0% {
-    box-shadow: 0 0 0 0 color-mix(in oklch, var(--brand) 55%, transparent);
+    box-shadow: 0 0 0 0 color-mix(in oklch, currentColor 55%, transparent);
   }
   70%,
   100% {
-    box-shadow: 0 0 0 7px transparent;
+    box-shadow: 0 0 0 8px transparent;
   }
 }
 
@@ -138,24 +201,120 @@ body {
   animation: ping-soft 2.4s var(--ease-out-expo) infinite;
 }
 
-/* Project rows lift very slightly toward the pointer. */
-.lift {
+/* ── Project row interaction ──────────────────────────────────────────── */
+.proj-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface);
   transition:
-    transform 0.5s var(--ease-out-expo),
-    box-shadow 0.5s var(--ease-out-expo);
+    border-color 0.5s var(--ease-out-quart),
+    transform 0.7s var(--ease-out-expo);
+  will-change: transform;
 }
 
-.lift:hover {
-  transform: translateY(-3px);
+.proj:hover .proj-frame,
+.proj:focus-within .proj-frame {
+  border-color: var(--brand);
+  transform: translateY(-6px);
 }
 
-/* Underline that grows from the origin rather than fading in. */
+.proj-media {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform: scale(1.001);
+  transition: transform 1.1s var(--ease-out-expo);
+  will-change: transform;
+}
+
+.proj:hover .proj-media,
+.proj:focus-within .proj-media {
+  transform: scale(1.055);
+}
+
+/* Warm wash so the hover reads as brand, not just movement. */
+.proj-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    color-mix(in oklch, var(--brand) 42%, transparent),
+    transparent 62%
+  );
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-out-quart);
+  pointer-events: none;
+}
+
+.proj:hover .proj-veil,
+.proj:focus-within .proj-veil {
+  opacity: 1;
+}
+
+/* Action pill rides up from the bottom edge. */
+.proj-cta {
+  position: absolute;
+  left: 1.1rem;
+  bottom: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  background: var(--brand);
+  color: var(--brand-ink);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transform: translateY(calc(100% + 1.4rem));
+  transition: transform 0.6s var(--ease-out-expo);
+  pointer-events: none;
+}
+
+.proj:hover .proj-cta,
+.proj:focus-within .proj-cta {
+  transform: translateY(0);
+}
+
+.proj-title {
+  transition: color 0.4s var(--ease-out-quart);
+}
+
+.proj:hover .proj-title,
+.proj:focus-within .proj-title {
+  color: var(--brand-deep);
+}
+
+/* Stack chips warm up in sequence rather than all at once. */
+.chip {
+  transition:
+    border-color 0.45s var(--ease-out-quart),
+    color 0.45s var(--ease-out-quart),
+    background-color 0.45s var(--ease-out-quart);
+  transition-delay: var(--chip-delay, 0ms);
+}
+
+.proj:hover .chip,
+.proj:focus-within .chip {
+  border-color: color-mix(in oklch, var(--brand) 55%, var(--border));
+  background: var(--brand-soft);
+  color: var(--brand-deep);
+}
+
+/* Parallax drift on the media as the row crosses the viewport. */
+.parallax {
+  transform: translate3d(0, var(--shift, 0px), 0);
+  will-change: transform;
+}
+
+/* ── Links ────────────────────────────────────────────────────────────── */
 .link-line {
-  background-image: linear-gradient(var(--brand), var(--brand));
+  background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
   background-position: 0 100%;
   background-size: 0% 2px;
-  transition: background-size 0.4s var(--ease-out-expo);
+  transition: background-size 0.45s var(--ease-out-expo);
 }
 
 .link-line:hover,
@@ -163,8 +322,22 @@ body {
   background-size: 100% 2px;
 }
 
+/* Buttons press in slightly rather than just changing colour. */
+.btn {
+  transition:
+    transform 0.35s var(--ease-out-expo),
+    background-color 0.35s var(--ease-out-quart),
+    color 0.35s var(--ease-out-quart);
+}
+.btn:hover {
+  transform: translateY(-2px);
+}
+.btn:active {
+  transform: translateY(0);
+}
+
 :where(a, button, summary, [tabindex]):focus-visible {
-  outline: 2px solid var(--brand);
+  outline: 2px solid currentColor;
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -191,19 +364,36 @@ input:focus {
   [data-reveal="pending"] {
     opacity: 1;
     transform: none;
+    clip-path: none;
   }
   [data-reveal="shown"] {
     transition: none;
   }
   .rise,
+  .line-inner,
   .rule-draw,
   .live-dot {
     animation: none;
   }
-  .lift:hover {
+  .proj-frame,
+  .proj-media,
+  .proj-veil,
+  .proj-cta,
+  .chip,
+  .btn,
+  .link-line,
+  .parallax {
+    transition: none;
+  }
+  .proj:hover .proj-frame,
+  .proj:hover .proj-media,
+  .btn:hover {
     transform: none;
   }
-  .link-line {
-    transition: none;
+  .parallax {
+    transform: none;
+  }
+  .proj-cta {
+    transform: translateY(0);
   }
 }

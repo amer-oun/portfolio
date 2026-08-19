@@ -19,6 +19,8 @@ const config: Config = {
         muted: "var(--muted)",
         accent: "var(--brand)",
         accentdeep: "var(--brand-deep)",
+        accentbright: "var(--brand-bright)",
+        brandink: "var(--brand-ink)",
         accentsoft: "var(--brand-soft)",
         warn: "var(--warn)",
         err: "var(--err)",

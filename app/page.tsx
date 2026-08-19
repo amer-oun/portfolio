@@ -293,6 +293,11 @@ function ProjectCard({
               <span className="w-1.5 h-1.5 rounded-full bg-accent live-dot" />
               LIVE
             </span>
+          ) : project.status === "complete" ? (
+            <span className="inline-flex items-center gap-2 text-xs font-mono text-accent">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+              V1 COMPLETE
+            </span>
           ) : (
             <span className="inline-flex items-center gap-2 text-xs font-mono text-warn">
               <span className="w-1.5 h-1.5 rounded-full bg-warn" />

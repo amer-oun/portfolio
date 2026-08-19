@@ -28,20 +28,20 @@ export const skills = {
   Frontend: ["Next.js", "React", "Flutter", "Tailwind CSS"],
   "Backend & Data": [
     "Node.js",
+    "Express",
     "Prisma",
     "NextAuth",
     "Streamlit",
     "Prophet",
     "pandas",
-    "scikit-learn",
   ],
-  Databases: ["PostgreSQL (Neon)", "SQLite", "MongoDB", "Firebase"],
+  Databases: ["PostgreSQL (Neon)", "SQLite", "MongoDB"],
   "Cloud & Tools": [
     "Vercel",
     "Neon",
     "Streamlit Cloud",
-    "Firebase",
-    "Google Maps API",
+    "OpenStreetMap",
+    "Open-Meteo",
     "Git",
     "GitHub Actions",
   ],
@@ -55,7 +55,7 @@ export type Project = {
   problem: string;
   solution: string;
   stack: string[];
-  status: "live" | "in-dev";
+  status: "live" | "complete" | "in-dev";
   liveUrl?: string;
   codeUrl: string;
   heroImage: string;
@@ -104,8 +104,8 @@ export const projects: Project[] = [
       "Python",
       "Prophet",
       "pandas",
-      "scikit-learn",
       "Plotly",
+      "scipy",
     ],
     status: "live",
     liveUrl:
@@ -132,11 +132,13 @@ export const projects: Project[] = [
     stack: [
       "Flutter",
       "Dart",
-      "Firebase",
-      "Google Maps",
-      "Geolocation",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "OpenStreetMap",
+      "Gemini",
     ],
-    status: "in-dev",
+    status: "complete",
     codeUrl: "https://github.com/amer-oun/costalina-app",
     heroImage:
       "https://github.com/user-attachments/assets/16a1d1f6-75d2-4b93-b560-40b31810b089",

@@ -178,7 +178,9 @@ export default function Terminal() {
     append({ kind: "muted", content: "" });
     for (const p of projects) {
       const badge =
-        p.status === "live" ? "● live" : "○ in-dev";
+        p.status === "live" ? "● live"
+        : p.status === "complete" ? "● v1 complete"
+        : "○ in-dev";
       append({
         kind: "accent",
         content: `  ${p.slug.padEnd(20)}${badge}`,
@@ -226,7 +228,11 @@ export default function Terminal() {
     });
     append({
       kind: "muted",
-      content: `  status: ${match.status === "live" ? "✅ live" : "🔨 in development"}`,
+      content: `  status: ${
+        match.status === "live" ? "✅ live"
+        : match.status === "complete" ? "✅ v1 complete"
+        : "🔨 in development"
+      }`,
     });
     if (match.client) {
       append({ kind: "muted", content: `  client: ${match.client}` });

@@ -176,7 +176,7 @@ body {
   pointer-events: none;
 }
 
-/* ── Project cards (horizontal reel + vertical fallback) ──────────────── */
+/* ── Project cards ────────────────────────────────────────────────────── */
 .proj-frame {
   position: relative;
   overflow: hidden;
@@ -267,25 +267,11 @@ body {
   color: var(--accent-text);
 }
 
-/* Horizontal reel. Falls back to a normal stack when GSAP does not pin. */
+/* Project rows sit in a plain vertical rhythm. */
 .reel {
   display: flex;
   flex-direction: column;
-  gap: 6rem;
-}
-@media (min-width: 1024px) {
-  .reel[data-pinned="true"] {
-    flex-direction: row;
-    gap: 0;
-    align-items: center;
-    flex-wrap: nowrap;
-    will-change: transform;
-  }
-  .reel[data-pinned="true"] > .reel-item {
-    flex: 0 0 auto;
-    width: min(78vw, 68rem);
-    padding-inline: clamp(1.5rem, 4vw, 4rem);
-  }
+  gap: clamp(5rem, 10vw, 9rem);
 }
 
 /* ── Magnetic buttons ─────────────────────────────────────────────────── */

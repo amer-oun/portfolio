@@ -145,8 +145,8 @@ function Hero() {
 function Work() {
   return (
     <section id="work" className="border-b border-border">
-      <div className="mx-auto max-w-6xl px-5 pt-20 sm:px-8 sm:pt-28">
-        <div className="mb-14 flex items-end justify-between gap-6">
+      <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">
+        <div className="mb-16 flex items-end justify-between gap-6 sm:mb-20">
           <h2
             data-split
             className="text-[clamp(2rem,5.5vw,3.5rem)] font-bold tracking-[-0.025em]"
@@ -155,19 +155,12 @@ function Work() {
           </h2>
           <span className="hidden shrink-0 pb-2 font-mono text-sm text-muted sm:block">
             {String(projects.length).padStart(2, "0")} projects
-            <span className="ml-3 hidden lg:inline">— scroll →</span>
           </span>
         </div>
-      </div>
 
-      {/* On desktop GSAP pins this section and drags the reel sideways.
-          Below 1024px the same markup is an ordinary vertical stack. */}
-      <div className="overflow-hidden pb-20 sm:pb-28">
-        <div className="reel mx-auto max-w-6xl px-5 sm:px-8 lg:max-w-none lg:px-0">
+        <div className="reel">
           {projects.map((project, i) => (
-            <div className="reel-item" key={project.slug}>
-              <ProjectCard project={project} index={i} />
-            </div>
+            <ProjectCard key={project.slug} project={project} index={i} />
           ))}
         </div>
       </div>
@@ -176,11 +169,15 @@ function Work() {
 }
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
-  return (
-    <article className="proj grid items-center gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-14">
-      <ProjectMedia project={project} />
+  const flipped = index % 2 === 1;
 
-      <div>
+  return (
+    <article className="proj grid items-center gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
+      <div className={flipped ? "lg:order-2" : undefined}>
+        <ProjectMedia project={project} />
+      </div>
+
+      <div className={`proj-copy ${flipped ? "lg:order-1" : ""}`}>
         <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2">
           <span className="font-mono text-xs text-muted">
             {String(index + 1).padStart(2, "0")}

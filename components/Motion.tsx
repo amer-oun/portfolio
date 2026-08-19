@@ -8,13 +8,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 /**
  * Owns every scroll-driven effect on the page.
  *
- * Lenis and ScrollTrigger must share one ticker — running them independently
- * makes pinned sections jitter against the smoothed scroll — so they are set up
- * together here rather than in separate components.
+ * Lenis and ScrollTrigger share one ticker — running them independently makes
+ * scrubbed animations jitter against the smoothed scroll.
  *
- * Everything is skipped under prefers-reduced-motion, and nothing here is
- * responsible for making content visible: the markup renders complete without
- * it, and these effects only animate from an already-painted state.
+ * Nothing here is responsible for making content visible: the markup renders
+ * complete without it, and these effects only animate an already-painted state.
  */
 export default function Motion() {
   useEffect(() => {
@@ -85,81 +83,69 @@ export default function Motion() {
           duration: 0.9,
           ease: "expo.out",
           stagger: 0.018,
-          scrollTrigger: {
-            trigger: el,
-            start: "top 88%",
-            once: true,
-          },
+          scrollTrigger: { trigger: el, start: "top 88%", once: true },
         });
       });
 
-      /* ── Pinned horizontal project reel (desktop only) ───────────────── */
-      const mm = gsap.matchMedia();
+      /* ── Project rows: depth instead of a layout trick ───────────────── */
+      gsap.utils.toArray<HTMLElement>(".proj").forEach((row) => {
+        const media = row.querySelector<HTMLElement>(".proj-frame");
+        const copy = row.querySelector<HTMLElement>(".proj-copy");
 
-      mm.add("(min-width: 1024px)", () => {
-        const section = document.querySelector<HTMLElement>("#work");
-        const reel = document.querySelector<HTMLElement>(".reel");
-        if (!section || !reel) return;
-
-        reel.dataset.pinned = "true";
-
-        const distance = () =>
-          Math.max(0, reel.scrollWidth - window.innerWidth + 64);
-
-        const tween = gsap.to(reel, {
-          x: () => -distance(),
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: () => `+=${distance()}`,
-            pin: true,
-            scrub: 0.8,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-          },
+        // The card settles into place as it enters.
+        gsap.from(row, {
+          y: 64,
+          opacity: 0,
+          duration: 1.1,
+          ease: "expo.out",
+          scrollTrigger: { trigger: row, start: "top 84%", once: true },
         });
 
-        // Each card lifts as it reaches the middle of the screen.
-        const cards = gsap.utils.toArray<HTMLElement>(".reel-item");
-        cards.forEach((card) => {
+        // Media and copy drift at slightly different rates the whole way
+        // through, so the stack has depth rather than sliding as one block.
+        if (media) {
           gsap.fromTo(
-            card,
-            { scale: 0.94, opacity: 0.55 },
+            media,
+            { yPercent: 5 },
             {
-              scale: 1,
-              opacity: 1,
+              yPercent: -5,
               ease: "none",
               scrollTrigger: {
-                trigger: card,
-                containerAnimation: tween,
-                start: "left 82%",
-                end: "center 52%",
-                scrub: true,
+                trigger: row,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 1,
               },
             },
           );
-        });
-
-        return () => {
-          reel.dataset.pinned = "false";
-          gsap.set(reel, { clearProps: "transform" });
-          cards.forEach((c) => gsap.set(c, { clearProps: "transform,opacity" }));
-        };
+        }
+        if (copy) {
+          gsap.fromTo(
+            copy,
+            { yPercent: -2.5 },
+            {
+              yPercent: 2.5,
+              ease: "none",
+              scrollTrigger: {
+                trigger: row,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 1,
+              },
+            },
+          );
+        }
       });
 
       /* ── Magnetic buttons ────────────────────────────────────────────── */
-      const magnets = gsap.utils.toArray<HTMLElement>(".magnetic");
       const cleanups: (() => void)[] = [];
 
-      magnets.forEach((el) => {
+      gsap.utils.toArray<HTMLElement>(".magnetic").forEach((el) => {
         const move = (e: PointerEvent) => {
           const r = el.getBoundingClientRect();
-          const mx = e.clientX - (r.left + r.width / 2);
-          const my = e.clientY - (r.top + r.height / 2);
           gsap.to(el, {
-            x: mx * 0.28,
-            y: my * 0.36,
+            x: (e.clientX - (r.left + r.width / 2)) * 0.28,
+            y: (e.clientY - (r.top + r.height / 2)) * 0.36,
             duration: 0.6,
             ease: "expo.out",
           });
@@ -177,14 +163,13 @@ export default function Motion() {
 
       return () => {
         cleanups.forEach((fn) => fn());
-        mm.revert();
         splits.forEach(({ el, html }) => {
           el.innerHTML = html;
         });
       };
     });
 
-    // Images settle late; recompute pin distances once they have.
+    // Images settle late; recompute trigger positions once they have.
     const onLoad = () => ScrollTrigger.refresh();
     window.addEventListener("load", onLoad);
 

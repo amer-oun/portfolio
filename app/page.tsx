@@ -125,7 +125,7 @@ export default function Home() {
             03 — TECH
           </p>
           <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-12" style={{textWrap: "balance" as any}}>
-            Tools I've actually shipped with.
+            Tools I&apos;ve actually shipped with.
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {Object.entries(skills).map(([category, items]) => (

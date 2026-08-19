@@ -2,6 +2,8 @@
 
 Personal portfolio and interactive terminal. Built with Next.js 15 · TypeScript · Tailwind CSS.
 
+[![CI](https://github.com/amer-oun/portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/amer-oun/portfolio/actions/workflows/ci.yml)
+
 ## Structure
 
 - `/` — main portfolio (hero, work, about, skills, contact)

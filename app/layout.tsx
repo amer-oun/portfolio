@@ -1,5 +1,25 @@
 import type { Metadata } from "next";
+import { Archivo, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+
+// Archivo is a signage grotesque — it was drawn for highway boards and
+// small-print forms, which is the right voice for operations software.
+// Self-hosted through next/font: no render-blocking request to Google, no
+// layout shift when the face arrives.
+const archivo = Archivo({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-archivo",
+  display: "swap",
+});
+
+// Mono is reserved for things that are literally data: stacks, counts, paths.
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Amer Oun — Full-stack developer · Tunis",
@@ -27,20 +47,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body>{children}</body>
+    <html lang="en" className={`${archivo.variable} ${mono.variable}`}>
+      <body className="font-sans antialiased">{children}</body>
     </html>
   );
 }

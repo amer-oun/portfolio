@@ -1,378 +1,442 @@
 import Link from "next/link";
-import { profile, skills, projects } from "@/lib/data";
+import Reveal from "@/components/Reveal";
+import { profile, projects, skills, type Project } from "@/lib/data";
+
+const nav = [
+  { href: "#work", label: "Work" },
+  { href: "#approach", label: "Approach" },
+  { href: "#stack", label: "Stack" },
+  { href: "#contact", label: "Contact" },
+];
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-bg text-ink">
-      {/* Sticky nav */}
-      <header className="sticky top-0 z-40 backdrop-blur-md bg-bg/70 border-b border-border/60">
-        <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
-          <Link
-            href="/"
-            className="font-mono text-sm tracking-tight hover:text-accent transition"
-          >
-            <span className="text-accent">$</span> amer-oun
-          </Link>
-          <nav className="hidden sm:flex items-center gap-8 text-sm text-muted">
-            <a href="#work" className="hover:text-ink transition">Work</a>
-            <a href="#about" className="hover:text-ink transition">About</a>
-            <a href="#skills" className="hover:text-ink transition">Skills</a>
-            <a href="#contact" className="hover:text-ink transition">Contact</a>
-            <Link
-              href="/terminal"
-              className="font-mono text-xs px-3 py-1.5 rounded border border-border/80 hover:border-accent hover:text-accent transition"
-              title="Interactive terminal (for the curious)"
-            >
-              ⌨ terminal
-            </Link>
-          </nav>
-        </div>
-      </header>
-
-      {/* HERO */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 grid-bg opacity-60 pointer-events-none" />
-        <div className="absolute left-1/2 top-1/3 -translate-x-1/2 w-[600px] h-[600px] orb pointer-events-none" />
-        <div className="relative mx-auto max-w-6xl px-6 pt-28 pb-32 sm:pt-40 sm:pb-44">
-          <p className="font-mono text-xs text-accent mb-6 tracking-wider reveal">
-            <span className="inline-block w-2 h-2 rounded-full bg-accent live-dot mr-2 align-middle" />
-            AVAILABLE FOR JUNIOR ROLES · TUNIS
-          </p>
-          <h1 className="text-5xl sm:text-7xl md:text-8xl font-bold tracking-tight leading-[0.95] mb-8 reveal" style={{textWrap: "balance" as any}}>
-            {profile.name}.
-          </h1>
-          <p className="text-xl sm:text-2xl md:text-3xl text-muted font-medium max-w-3xl leading-snug reveal" style={{animationDelay: "0.1s", textWrap: "balance" as any}}>
-            {profile.tagline}
-          </p>
-          <div className="mt-12 flex flex-wrap items-center gap-4 reveal" style={{animationDelay: "0.2s"}}>
-            <a
-              href="#contact"
-              className="px-6 py-3 bg-accent text-black font-semibold rounded-md hover:bg-accent/90 transition"
-            >
-              Get in touch →
-            </a>
-            <a
-              href="#work"
-              className="px-6 py-3 border border-border hover:border-ink text-ink rounded-md transition"
-            >
-              See my work
-            </a>
-            <Link
-              href="/terminal"
-              className="px-4 py-3 text-muted hover:text-accent transition text-sm font-mono"
-            >
-              or run the terminal ⌨
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* WORK */}
-      <section id="work" className="border-t border-border/60">
-        <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
-          <div className="flex items-end justify-between mb-16">
-            <div>
-              <p className="font-mono text-xs text-accent tracking-wider mb-3">
-                01 — SELECTED WORK
-              </p>
-              <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">
-                Three projects, three real clients.
-              </h2>
-            </div>
-          </div>
-
-          <div className="space-y-32">
-            {projects.map((p, i) => (
-              <ProjectCard key={p.slug} project={p} index={i} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ABOUT */}
-      <section id="about" className="border-t border-border/60 bg-surface/30">
-        <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
-          <p className="font-mono text-xs text-accent tracking-wider mb-3">
-            02 — ABOUT
-          </p>
-          <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-12" style={{textWrap: "balance" as any}}>
-            I ship things that run in production.
-          </h2>
-          <div className="grid md:grid-cols-3 gap-12">
-            <div className="md:col-span-2 space-y-6 text-lg text-muted leading-relaxed max-w-2xl">
-              {profile.about.map((para, i) => (
-                <p key={i}>{para}</p>
-              ))}
-            </div>
-            <div className="space-y-6">
-              {profile.facts.map((f) => (
-                <div key={f.label} className="border-l-2 border-accent pl-4">
-                  <p className="font-mono text-xs text-muted uppercase tracking-wider mb-1">
-                    {f.label}
-                  </p>
-                  <p className="text-ink font-medium">{f.value}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SKILLS */}
-      <section id="skills" className="border-t border-border/60">
-        <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
-          <p className="font-mono text-xs text-accent tracking-wider mb-3">
-            03 — TECH
-          </p>
-          <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-12" style={{textWrap: "balance" as any}}>
-            Tools I&apos;ve actually shipped with.
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {Object.entries(skills).map(([category, items]) => (
-              <div
-                key={category}
-                className="p-6 rounded-lg bg-surface border border-border/60 hover:border-accent/50 transition"
-              >
-                <p className="font-mono text-xs text-accent uppercase tracking-wider mb-4">
-                  {category}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {items.map((s) => (
-                    <span
-                      key={s}
-                      className="text-sm px-3 py-1 rounded-md bg-bg border border-border/40 text-ink"
-                    >
-                      {s}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CONTACT */}
-      <section id="contact" className="border-t border-border/60 bg-surface/30">
-        <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
-          <p className="font-mono text-xs text-accent tracking-wider mb-3">
-            04 — CONTACT
-          </p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-8 max-w-3xl" style={{textWrap: "balance" as any}}>
-            Have a role, project, or good idea?
-          </h2>
-          <p className="text-xl text-muted mb-12 max-w-2xl">
-            I read every message. The fastest way to reach me is by email or LinkedIn.
-          </p>
-          <div className="grid sm:grid-cols-2 gap-4 max-w-3xl">
-            <a
-              href={`mailto:${profile.email}`}
-              className="group p-6 rounded-lg bg-bg border border-border hover:border-accent transition"
-            >
-              <p className="font-mono text-xs text-muted uppercase tracking-wider mb-2">
-                Email
-              </p>
-              <p className="text-lg text-ink group-hover:text-accent transition break-all">
-                {profile.email}
-              </p>
-            </a>
-            <a
-              href={profile.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group p-6 rounded-lg bg-bg border border-border hover:border-accent transition"
-            >
-              <p className="font-mono text-xs text-muted uppercase tracking-wider mb-2">
-                LinkedIn
-              </p>
-              <p className="text-lg text-ink group-hover:text-accent transition">
-                /in/amer-oun-b33212312 →
-              </p>
-            </a>
-            <a
-              href={profile.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group p-6 rounded-lg bg-bg border border-border hover:border-accent transition"
-            >
-              <p className="font-mono text-xs text-muted uppercase tracking-wider mb-2">
-                GitHub
-              </p>
-              <p className="text-lg text-ink group-hover:text-accent transition">
-                @amer-oun →
-              </p>
-            </a>
-            <div className="p-6 rounded-lg bg-bg border border-border">
-              <p className="font-mono text-xs text-muted uppercase tracking-wider mb-2">
-                Based in
-              </p>
-              <p className="text-lg text-ink">{profile.location}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="border-t border-border/60">
-        <div className="mx-auto max-w-6xl px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-muted font-mono">
-            <span className="text-accent">$</span> whoami → {profile.handle} · © 2026
-          </p>
-          <div className="flex items-center gap-6 text-sm">
-            <Link
-              href="/terminal"
-              className="text-muted hover:text-accent transition font-mono"
-            >
-              ⌨ terminal
-            </Link>
-            <a
-              href={profile.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted hover:text-ink transition"
-            >
-              GitHub
-            </a>
-            <a
-              href={profile.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted hover:text-ink transition"
-            >
-              LinkedIn
-            </a>
-          </div>
-        </div>
-        <div className="text-center pb-6">
-          <p className="text-xs text-muted font-mono">
-            Handcrafted in Tunis with Next.js. No excuses.
-          </p>
-        </div>
-      </footer>
-    </main>
+    <>
+      <SiteNav />
+      <main id="top">
+        <Hero />
+        <Work />
+        <Approach />
+        <Stack />
+        <Contact />
+      </main>
+      <Footer />
+    </>
   );
 }
 
-function ProjectCard({
-  project,
-  index,
-}: {
-  project: (typeof projects)[number];
-  index: number;
-}) {
-  const reversed = index % 2 === 1;
+/* ── Navigation ───────────────────────────────────────────────────────── */
 
+function SiteNav() {
   return (
-    <article className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-      <div
-        className={`relative group ${reversed ? "lg:order-2" : ""}`}
+    <header className="sticky top-0 z-sticky border-b border-border bg-bg/85 backdrop-blur-md">
+      <nav
+        aria-label="Primary"
+        className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-5 sm:px-8"
       >
-        <div className="absolute -inset-1 bg-gradient-to-tr from-accent/30 to-transparent rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none" />
-        {project.demoVideo ? (
-          <div className="relative block overflow-hidden rounded-xl border border-border bg-surface">
-            <video
-              src={project.demoVideo}
-              poster={project.heroImage}
-              controls
-              playsInline
-              preload="metadata"
-              aria-label={`${project.name} — demo recording`}
-              className="w-full h-auto block"
-            />
-          </div>
-        ) : (
+        <a
+          href="#top"
+          className="font-semibold tracking-tight text-ink text-[0.95rem]"
+        >
+          Amer&nbsp;Oun
+        </a>
+
+        <ul className="hidden items-center gap-7 text-sm text-muted md:flex">
+          {nav.map((item) => (
+            <li key={item.href}>
+              <a
+                href={item.href}
+                className="link-line pb-0.5 transition-colors hover:text-ink"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        <a
+          href={`mailto:${profile.email}`}
+          className="rounded-md bg-ink px-4 py-2 text-sm font-medium text-bg transition-colors duration-300 hover:bg-accentdeep"
+        >
+          Get in touch
+        </a>
+      </nav>
+    </header>
+  );
+}
+
+/* ── Hero ─────────────────────────────────────────────────────────────── */
+
+function Hero() {
+  return (
+    <section className="border-b border-border">
+      <div className="mx-auto max-w-6xl px-5 pb-20 pt-20 sm:px-8 sm:pb-28 sm:pt-28">
+        <p
+          className="rise mb-7 flex items-center gap-2.5 font-mono text-[0.8rem] text-muted"
+          style={{ ["--rise-delay" as string]: "0ms" }}
+        >
+          <span
+            aria-hidden
+            className="live-dot inline-block h-1.5 w-1.5 rounded-full bg-accent"
+          />
+          {profile.status}
+        </p>
+
+        <h1
+          className="rise max-w-[19ch] text-[clamp(2.6rem,8vw,5.5rem)] font-extrabold leading-[0.95] tracking-[-0.03em] text-ink"
+          style={{ ["--rise-delay" as string]: "90ms", textWrap: "balance" }}
+        >
+          I build the systems a business runs on.
+        </h1>
+
+        <div
+          className="rule-draw mt-9 h-[3px] w-24 bg-accent"
+          style={{ ["--rise-delay" as string]: "260ms" }}
+        />
+
+        <p
+          className="rise mt-9 max-w-prose text-lg leading-relaxed text-inksoft sm:text-xl"
+          style={{ ["--rise-delay" as string]: "200ms", textWrap: "pretty" }}
+        >
+          Dispatch for a fibre-optic crew, sales forecasting for a telecom
+          operator, coastline monitoring for a hotel group. Three final-year
+          projects for real clients in {profile.location} — two of them running
+          in production today.
+        </p>
+
+        <div
+          className="rise mt-10 flex flex-wrap items-center gap-x-7 gap-y-4"
+          style={{ ["--rise-delay" as string]: "300ms" }}
+        >
           <a
-            href={project.liveUrl ?? project.codeUrl}
+            href="#work"
+            className="rounded-md bg-accent px-6 py-3 font-medium text-[oklch(0.16_0.02_50)] transition-transform duration-300 ease-out-expo hover:-translate-y-0.5"
+          >
+            See the work
+          </a>
+          <a
+            href={profile.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative block overflow-hidden rounded-xl border border-border bg-surface"
+            className="link-line font-medium text-ink"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={project.heroImage}
-              alt={project.name}
-              className="w-full h-auto group-hover:scale-[1.02] transition duration-700"
-            />
+            GitHub
           </a>
-        )}
+          <Link href="/terminal" className="link-line font-medium text-muted">
+            or run the terminal
+          </Link>
+        </div>
       </div>
-      <div className={reversed ? "lg:order-1" : ""}>
-        <div className="flex items-center gap-3 mb-3">
-          <span className="font-mono text-xs text-muted">
-            0{index + 1}
+    </section>
+  );
+}
+
+/* ── Work ─────────────────────────────────────────────────────────────── */
+
+function Work() {
+  return (
+    <section id="work" className="border-b border-border">
+      <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">
+        <Reveal className="mb-16 flex items-end justify-between gap-6 sm:mb-20">
+          <h2 className="text-[clamp(2rem,5vw,3.25rem)] font-bold tracking-[-0.025em] text-ink">
+            Selected work
+          </h2>
+          <span className="hidden shrink-0 pb-2 font-mono text-sm text-muted sm:block">
+            {String(projects.length).padStart(2, "0")} projects
           </span>
-          <span className="h-px w-8 bg-border" />
-          {project.status === "live" ? (
-            <span className="inline-flex items-center gap-2 text-xs font-mono text-accent">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent live-dot" />
-              LIVE
-            </span>
-          ) : project.status === "complete" ? (
-            <span className="inline-flex items-center gap-2 text-xs font-mono text-accent">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-              V1 COMPLETE
-            </span>
-          ) : (
-            <span className="inline-flex items-center gap-2 text-xs font-mono text-warn">
-              <span className="w-1.5 h-1.5 rounded-full bg-warn" />
-              IN DEVELOPMENT
-            </span>
-          )}
-          {project.client && (
-            <span className="text-xs font-mono text-muted">
-              · client: <span className="text-ink">{project.client}</span>
-            </span>
-          )}
-        </div>
-        <h3 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">
-          {project.name}
-        </h3>
-        <p className="text-lg text-muted mb-6 italic">{project.pitch}</p>
-        <div className="space-y-4 text-muted leading-relaxed mb-6">
-          <div>
-            <p className="font-mono text-xs text-accent uppercase tracking-wider mb-1">
-              The problem
-            </p>
-            <p>{project.problem}</p>
-          </div>
-          <div>
-            <p className="font-mono text-xs text-accent uppercase tracking-wider mb-1">
-              The solution
-            </p>
-            <p>{project.solution}</p>
-          </div>
-        </div>
-        <div className="flex flex-wrap gap-2 mb-6">
-          {project.stack.map((s) => (
-            <span
-              key={s}
-              className="text-xs font-mono px-2.5 py-1 rounded bg-surface border border-border/60 text-muted"
-            >
-              {s}
-            </span>
+        </Reveal>
+
+        <div className="flex flex-col gap-20 sm:gap-28">
+          {projects.map((project, i) => (
+            <ProjectRow key={project.slug} project={project} index={i} />
           ))}
         </div>
-        <div className="flex flex-wrap items-center gap-4">
+      </div>
+    </section>
+  );
+}
+
+function ProjectRow({ project, index }: { project: Project; index: number }) {
+  const flipped = index % 2 === 1;
+
+  return (
+    <Reveal
+      as="article"
+      className="grid items-center gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-16"
+    >
+      {/* Media */}
+      <div className={flipped ? "lg:order-2" : undefined}>
+        <ProjectMedia project={project} />
+      </div>
+
+      {/* Copy */}
+      <div className={flipped ? "lg:order-1" : undefined}>
+        <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+          <h3 className="text-2xl font-bold tracking-[-0.02em] text-ink sm:text-3xl">
+            {project.name}
+          </h3>
+          <StatusTag status={project.status} />
+          {project.client && (
+            <span className="font-mono text-xs text-muted">
+              client:&nbsp;
+              <span className="text-inksoft">{project.client}</span>
+            </span>
+          )}
+        </div>
+
+        <p className="mb-5 text-lg text-inksoft" style={{ textWrap: "pretty" }}>
+          {project.pitch}
+        </p>
+
+        <p
+          className="mb-7 max-w-prose leading-relaxed text-muted"
+          style={{ textWrap: "pretty" }}
+        >
+          {project.solution}
+        </p>
+
+        <ul className="mb-8 flex flex-wrap gap-2" aria-label="Tech stack">
+          {project.stack.map((tech) => (
+            <li
+              key={tech}
+              className="rounded border border-border bg-surface px-2.5 py-1 font-mono text-xs text-inksoft"
+            >
+              {tech}
+            </li>
+          ))}
+        </ul>
+
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
           {project.liveUrl && (
             <a
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-accent hover:underline underline-offset-4 font-medium"
+              className="link-line font-medium text-accentdeep"
             >
-              Live demo →
+              Visit the live app
             </a>
           )}
           <a
             href={project.codeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-ink hover:text-accent transition font-medium"
+            className="link-line font-medium text-ink"
           >
-            View code →
+            Read the code
           </a>
         </div>
       </div>
-    </article>
+    </Reveal>
+  );
+}
+
+function ProjectMedia({ project }: { project: Project }) {
+  const frame =
+    "overflow-hidden rounded-xl border border-border bg-surface shadow-[0_1px_2px_oklch(0.19_0.015_55/0.06)]";
+
+  if (project.demoVideo) {
+    return (
+      <div className={frame}>
+        <video
+          src={project.demoVideo}
+          poster={project.heroImage}
+          controls
+          playsInline
+          preload="metadata"
+          aria-label={`${project.name} — screen recording of a full report`}
+          className="block h-auto w-full"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <a
+      href={project.liveUrl ?? project.codeUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`lift block ${frame}`}
+      aria-label={`${project.name} — open the live app`}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={project.heroImage}
+        alt={`${project.name} — ${project.pitch}`}
+        loading="lazy"
+        decoding="async"
+        className="block h-auto w-full"
+      />
+    </a>
+  );
+}
+
+function StatusTag({ status }: { status: Project["status"] }) {
+  if (status === "live") {
+    return (
+      <span className="inline-flex items-center gap-2 font-mono text-xs text-accentdeep">
+        <span
+          aria-hidden
+          className="live-dot inline-block h-1.5 w-1.5 rounded-full bg-accent"
+        />
+        live
+      </span>
+    );
+  }
+  if (status === "complete") {
+    return (
+      <span className="font-mono text-xs text-muted">v1 complete</span>
+    );
+  }
+  return <span className="font-mono text-xs text-warn">in development</span>;
+}
+
+/* ── Approach ─────────────────────────────────────────────────────────── */
+
+function Approach() {
+  return (
+    <section id="approach" className="border-b border-border bg-surface">
+      <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-20">
+          <Reveal>
+            <h2 className="mb-10 text-[clamp(2rem,5vw,3.25rem)] font-bold tracking-[-0.025em] text-ink">
+              How I work
+            </h2>
+            <div className="flex max-w-prose flex-col gap-6 text-lg leading-relaxed text-inksoft">
+              {profile.about.map((para) => (
+                <p key={para.slice(0, 24)} style={{ textWrap: "pretty" }}>
+                  {para}
+                </p>
+              ))}
+            </div>
+          </Reveal>
+
+          <Reveal delay={120}>
+            <dl className="divide-y divide-border border-y border-border">
+              {profile.facts.map((fact) => (
+                <div
+                  key={fact.label}
+                  className="grid grid-cols-[7.5rem_1fr] gap-4 py-4"
+                >
+                  <dt className="font-mono text-xs uppercase tracking-wide text-muted">
+                    {fact.label}
+                  </dt>
+                  <dd className="text-sm text-inksoft">{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Stack ────────────────────────────────────────────────────────────── */
+
+function Stack() {
+  const groups = Object.entries(skills);
+
+  return (
+    <section id="stack" className="border-b border-border">
+      <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">
+        <Reveal className="mb-14">
+          <h2 className="mb-4 text-[clamp(2rem,5vw,3.25rem)] font-bold tracking-[-0.025em] text-ink">
+            Tools I&apos;ve actually shipped with
+          </h2>
+          <p className="max-w-prose text-muted">
+            Everything here appears in one of the three projects above, not on a
+            course syllabus.
+          </p>
+        </Reveal>
+
+        <div className="border-t border-border">
+          {groups.map(([group, items], i) => (
+            <Reveal key={group} delay={i * 70}>
+              <div className="grid gap-3 border-b border-border py-6 sm:grid-cols-[13rem_1fr] sm:gap-8 sm:py-7">
+                <h3 className="font-mono text-sm text-muted">{group}</h3>
+                <ul className="flex flex-wrap gap-x-5 gap-y-2">
+                  {items.map((item) => (
+                    <li key={item} className="text-inksoft">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Contact ──────────────────────────────────────────────────────────── */
+
+function Contact() {
+  return (
+    <section id="contact" className="bg-ink text-bg">
+      <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
+        <Reveal>
+          <h2
+            className="max-w-[16ch] text-[clamp(2.2rem,6.5vw,4.5rem)] font-extrabold leading-[1.02] tracking-[-0.03em]"
+            style={{ textWrap: "balance" }}
+          >
+            Looking for a junior who has already shipped.
+          </h2>
+
+          <div className="mt-8 h-[3px] w-24 bg-accent" />
+
+          <p className="mt-8 max-w-prose text-lg leading-relaxed opacity-80">
+            I&apos;m finishing my degree at {profile.school} and I&apos;m open to
+            junior roles, remote or in {profile.location}. The fastest way to
+            reach me is email — I answer the same day.
+          </p>
+
+          <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-5">
+            <a
+              href={`mailto:${profile.email}`}
+              className="rounded-md bg-accent px-7 py-3.5 text-lg font-medium text-[oklch(0.16_0.02_50)] transition-transform duration-300 ease-out-expo hover:-translate-y-0.5"
+            >
+              {profile.email}
+            </a>
+            <a
+              href={profile.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-line font-medium"
+            >
+              LinkedIn
+            </a>
+            <a
+              href={profile.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-line font-medium"
+            >
+              GitHub
+            </a>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* ── Footer ───────────────────────────────────────────────────────────── */
+
+function Footer() {
+  return (
+    <footer className="border-t border-border bg-ink text-bg">
+      <div className="mx-auto flex max-w-6xl flex-col gap-3 px-5 py-8 text-sm opacity-70 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+        <p>
+          © {new Date().getFullYear()} {profile.name} — built in{" "}
+          {profile.location} with Next.js.
+        </p>
+        <Link href="/terminal" className="link-line font-mono">
+          ⌨ terminal
+        </Link>
+      </div>
+    </footer>
   );
 }

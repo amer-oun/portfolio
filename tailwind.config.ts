@@ -8,42 +8,35 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#0a0a0a",
-        surface: "#141414",
-        border: "#262626",
-        ink: "#f5f5f5",
-        muted: "#a3a3a3",
-        accent: "#00E599",
-        warn: "#f0883e",
-        err: "#f85149",
-        link: "#58a6ff",
+        // Every token resolves through a CSS variable so the /terminal route
+        // can swap the whole palette with one class instead of a second theme.
+        bg: "var(--paper)",
+        surface: "var(--surface)",
+        surface2: "var(--surface-2)",
+        border: "var(--border)",
+        ink: "var(--ink)",
+        inksoft: "var(--ink-soft)",
+        muted: "var(--muted)",
+        accent: "var(--brand)",
+        accentdeep: "var(--brand-deep)",
+        accentsoft: "var(--brand-soft)",
+        warn: "var(--warn)",
+        err: "var(--err)",
+        link: "var(--link)",
       },
       fontFamily: {
-        sans: [
-          "Inter",
-          "-apple-system",
-          "BlinkMacSystemFont",
-          "Segoe UI",
-          "Roboto",
-          "sans-serif",
-        ],
-        mono: [
-          "JetBrains Mono",
-          "Fira Code",
-          "SF Mono",
-          "Menlo",
-          "Consolas",
-          "monospace",
-        ],
+        sans: ["var(--font-archivo)", "system-ui", "sans-serif"],
+        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },
-      animation: {
-        blink: "blink 1s step-end infinite",
+      maxWidth: {
+        prose: "68ch",
       },
-      keyframes: {
-        blink: {
-          "0%, 50%": { opacity: "1" },
-          "50.01%, 100%": { opacity: "0" },
-        },
+      transitionTimingFunction: {
+        "out-expo": "cubic-bezier(0.16, 1, 0.3, 1)",
+      },
+      zIndex: {
+        sticky: "100",
+        overlay: "200",
       },
     },
   },

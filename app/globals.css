@@ -2,37 +2,173 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  Palette anchor: orange is the APWA utility-locate colour for telecommunications
+  — the paint sprayed on a pavement before anyone digs toward a fibre duct.
+  Amer's work is field operations for Tunisian telecom, so the brand colour is
+  taken from the job site rather than from a flag or a code editor.
+  Surfaces are daylight: a dispatcher reads these screens at 8am, not at 2am.
+*/
 :root {
+  color-scheme: light;
+
+  --paper: oklch(0.981 0 0);
+  --surface: oklch(0.958 0.004 55);
+  --surface-2: oklch(0.935 0.006 55);
+  --ink: oklch(0.19 0.015 55);
+  --ink-soft: oklch(0.34 0.012 55);
+  --muted: oklch(0.44 0.01 55);
+  --border: oklch(0.895 0.005 55);
+  --brand: oklch(0.66 0.185 47);
+  --brand-deep: oklch(0.46 0.15 45);
+  --brand-soft: oklch(0.955 0.032 62);
+  --warn: oklch(0.72 0.15 70);
+  --err: oklch(0.58 0.19 25);
+  --link: oklch(0.46 0.15 45);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --z-sticky: 100;
+  --z-overlay: 200;
+}
+
+/* The terminal keeps its own night-time world. */
+.theme-dark {
   color-scheme: dark;
+
+  --paper: oklch(0.163 0.008 55);
+  --surface: oklch(0.212 0.008 55);
+  --surface-2: oklch(0.26 0.008 55);
+  --ink: oklch(0.962 0.004 55);
+  --ink-soft: oklch(0.82 0.006 55);
+  --muted: oklch(0.685 0.008 55);
+  --border: oklch(0.312 0.008 55);
+  --brand: oklch(0.76 0.155 58);
+  --brand-deep: oklch(0.76 0.155 58);
+  --brand-soft: oklch(0.28 0.05 55);
+  --link: oklch(0.75 0.11 240);
 }
 
 html {
   scroll-behavior: smooth;
+  /* the sticky bar must not sit on top of the section it just scrolled to */
+  scroll-padding-top: 5.5rem;
 }
 
-html, body {
-  background: #0a0a0a;
-  color: #f5f5f5;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+html,
+body {
+  background: var(--paper);
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
 }
 
-.font-mono {
-  font-family: "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Consolas,
-    monospace;
+body {
+  font-synthesis-weight: none;
 }
 
-/* Selection */
 ::selection {
-  background: rgba(0, 229, 153, 0.25);
-  color: #f5f5f5;
+  background: var(--brand);
+  color: var(--paper);
 }
 
-/* Terminal scrollbar */
+/* ── Reveal ────────────────────────────────────────────────────────────────
+   Content is visible by default. The hidden state is applied by JS only after
+   hydration, so a headless renderer, a crawler, or a JS failure still sees a
+   complete page instead of a blank one.                                      */
+[data-reveal="pending"] {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+[data-reveal="shown"] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s var(--ease-out-expo),
+    transform 0.7s var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* Hero choreography: runs once on load, distinct from the scroll reveals. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: rise 0.9s var(--ease-out-expo) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+
+@keyframes draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.rule-draw {
+  transform-origin: left;
+  animation: draw 1.1s var(--ease-out-expo) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+
+/* The status dot on a live project. */
+@keyframes ping-soft {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklch, var(--brand) 55%, transparent);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 7px transparent;
+  }
+}
+
+.live-dot {
+  animation: ping-soft 2.4s var(--ease-out-expo) infinite;
+}
+
+/* Project rows lift very slightly toward the pointer. */
+.lift {
+  transition:
+    transform 0.5s var(--ease-out-expo),
+    box-shadow 0.5s var(--ease-out-expo);
+}
+
+.lift:hover {
+  transform: translateY(-3px);
+}
+
+/* Underline that grows from the origin rather than fading in. */
+.link-line {
+  background-image: linear-gradient(var(--brand), var(--brand));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 2px;
+  transition: background-size 0.4s var(--ease-out-expo);
+}
+
+.link-line:hover,
+.link-line:focus-visible {
+  background-size: 100% 2px;
+}
+
+:where(a, button, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
 .terminal-scroll::-webkit-scrollbar {
   width: 6px;
 }
@@ -40,84 +176,34 @@ html, body {
   background: transparent;
 }
 .terminal-scroll::-webkit-scrollbar-thumb {
-  background: #30363d;
+  background: var(--border);
   border-radius: 3px;
-}
-
-/* Page scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: #0a0a0a;
-}
-::-webkit-scrollbar-thumb {
-  background: #262626;
-  border-radius: 5px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #404040;
 }
 
 input:focus {
   outline: none;
 }
 
-/* Reveal animation for sections */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.reveal {
-  animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-/* Live indicator pulse */
-@keyframes pulse-live {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.6;
-    transform: scale(1.15);
-  }
-}
-
-.live-dot {
-  animation: pulse-live 2s ease-in-out infinite;
-}
-
-/* Gradient orb for hero */
-.orb {
-  background: radial-gradient(
-    circle at center,
-    rgba(0, 229, 153, 0.18) 0%,
-    rgba(0, 229, 153, 0.04) 40%,
-    transparent 70%
-  );
-  filter: blur(40px);
-}
-
-/* Subtle grid background for hero */
-.grid-bg {
-  background-image:
-    linear-gradient(to right, rgba(38, 38, 38, 0.4) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(38, 38, 38, 0.4) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
-}
-
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .reveal { animation: none; }
-  .live-dot { animation: none; }
+  html {
+    scroll-behavior: auto;
+  }
+  [data-reveal="pending"] {
+    opacity: 1;
+    transform: none;
+  }
+  [data-reveal="shown"] {
+    transition: none;
+  }
+  .rise,
+  .rule-draw,
+  .live-dot {
+    animation: none;
+  }
+  .lift:hover {
+    transform: none;
+  }
+  .link-line {
+    transition: none;
+  }
 }

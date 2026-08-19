@@ -59,6 +59,7 @@ export type Project = {
   liveUrl?: string;
   codeUrl: string;
   heroImage: string;
+  demoVideo?: string;
   gallery: string[];
 };
 
@@ -142,6 +143,7 @@ export const projects: Project[] = [
     codeUrl: "https://github.com/amer-oun/costalina-app",
     heroImage:
       "https://github.com/user-attachments/assets/16a1d1f6-75d2-4b93-b560-40b31810b089",
+    demoVideo: "/costalina-demo.mp4",
     gallery: [
       "https://github.com/user-attachments/assets/100458bb-5629-482c-9ea6-88516826a01e",
       "https://github.com/user-attachments/assets/af178b3b-dc9e-4410-82fd-a0989221e256",

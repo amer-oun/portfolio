@@ -268,19 +268,33 @@ function ProjectCard({
         className={`relative group ${reversed ? "lg:order-2" : ""}`}
       >
         <div className="absolute -inset-1 bg-gradient-to-tr from-accent/30 to-transparent rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none" />
-        <a
-          href={project.liveUrl ?? project.codeUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="relative block overflow-hidden rounded-xl border border-border bg-surface"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={project.heroImage}
-            alt={project.name}
-            className="w-full h-auto group-hover:scale-[1.02] transition duration-700"
-          />
-        </a>
+        {project.demoVideo ? (
+          <div className="relative block overflow-hidden rounded-xl border border-border bg-surface">
+            <video
+              src={project.demoVideo}
+              poster={project.heroImage}
+              controls
+              playsInline
+              preload="metadata"
+              aria-label={`${project.name} — demo recording`}
+              className="w-full h-auto block"
+            />
+          </div>
+        ) : (
+          <a
+            href={project.liveUrl ?? project.codeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative block overflow-hidden rounded-xl border border-border bg-surface"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={project.heroImage}
+              alt={project.name}
+              className="w-full h-auto group-hover:scale-[1.02] transition duration-700"
+            />
+          </a>
+        )}
       </div>
       <div className={reversed ? "lg:order-1" : ""}>
         <div className="flex items-center gap-3 mb-3">

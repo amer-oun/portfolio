@@ -8,20 +8,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Every token resolves through a CSS variable so the /terminal route
-        // can swap the whole palette with one class instead of a second theme.
-        bg: "var(--paper)",
+        // Every token resolves through a CSS variable so a route can swap the
+        // whole palette with one class instead of a second theme.
+        bg: "var(--base)",
         surface: "var(--surface)",
         surface2: "var(--surface-2)",
         border: "var(--border)",
         ink: "var(--ink)",
         inksoft: "var(--ink-soft)",
         muted: "var(--muted)",
-        accent: "var(--brand)",
-        accentdeep: "var(--brand-deep)",
-        accentbright: "var(--brand-bright)",
-        brandink: "var(--brand-ink)",
-        accentsoft: "var(--brand-soft)",
+        accent: "var(--accent)",
+        accenttext: "var(--accent-text)",
+        accentdim: "var(--accent-dim)",
+        accentink: "var(--accent-ink)",
         warn: "var(--warn)",
         err: "var(--err)",
         link: "var(--link)",

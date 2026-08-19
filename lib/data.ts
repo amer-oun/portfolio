@@ -10,6 +10,8 @@ export const profile = {
   email: "ounamer31@gmail.com",
   github: "https://github.com/amer-oun",
   linkedin: "https://www.linkedin.com/in/amer-oun-b33212312/",
+  // International format, digits only (e.g. "21612345678"). Empty = hidden.
+  whatsapp: "",
   status: "Open to junior developer roles",
   about: [
     "Final-year computer science student at Collège LaSalle Tunis, graduating in 2026. Two of my three current projects were shaped by real client conversations, which has changed how I think about scope, edge cases, and what \"done\" actually means.",

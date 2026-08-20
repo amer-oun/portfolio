@@ -9,7 +9,7 @@ export const profile = {
   graduation: "2026",
   email: "ounamer31@gmail.com",
   github: "https://github.com/amer-oun",
-  linkedin: "https://www.linkedin.com/in/amer-oun-b33212312/",
+  linkedin: "https://www.linkedin.com/in/amer-oun/",
   // International format, digits only (e.g. "21612345678"). Empty = hidden.
   whatsapp: "",
   status: "Open to junior developer roles",

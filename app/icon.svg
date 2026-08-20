@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Charcoal tile + electric blue A: the same two colours the site runs on,
+       drawn as paths so the mark never depends on a font being present. -->
+  <rect width="32" height="32" rx="7" fill="#121418"/>
+  <g fill="none" stroke="#3082f6" stroke-width="3.1"
+     stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 25 L16 7 L23 25"/>
+    <path d="M12.1 18.4 H19.9"/>
+  </g>
+</svg>

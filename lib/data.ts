@@ -67,6 +67,39 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "inbox-copilot",
+    name: "Inbox Copilot",
+    pitch: "AI email assistant for Gmail.",
+    problem:
+      "A busy inbox mixes the few messages that need an answer today with newsletters, notifications and the occasional phishing attempt written to look urgent. Most AI email tools answer that by acting on your behalf — which is exactly what an assistant reading hostile mail should never be allowed to do.",
+    solution:
+      "Syncs your inbox in real time, sorts mail by category and priority, summarizes long threads, drafts replies in three tones, translates, schedules sends and chases follow-ups. Phishing detection puts SPF/DKIM/DMARC checks and link heuristics underneath the AI: the model can raise a verdict, never lower it. AI drafts never send without a human pressing send. Covered by 1,300+ automated tests. The live demo is limited to approved test users while Google verification is pending.",
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "Tailwind",
+      "Express",
+      "Prisma",
+      "PostgreSQL",
+      "Redis/BullMQ",
+      "Gemini API",
+      "Google OAuth",
+      "Vercel",
+      "Render",
+      "Neon",
+      "Upstash",
+    ],
+    status: "live",
+    liveUrl: "https://inbox-copilot-wheat.vercel.app",
+    codeUrl: "https://github.com/amer-oun/inbox-copilot",
+    heroImage: "/inbox-copilot-hero.png",
+    gallery: [
+      "/inbox-copilot-thread.png",
+      "/inbox-copilot-phishing.png",
+      "/inbox-copilot-mobile.png",
+    ],
+  },
+  {
     slug: "fibreconnect",
     name: "FibreConnect",
     pitch: "Intervention management for a Tunisian fiber optic subcontractor.",

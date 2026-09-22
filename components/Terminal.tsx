@@ -12,7 +12,7 @@ const HELP_ROWS: [string, string][] = [
   ["help", "list all available commands"],
   ["about", "who I am and what I do"],
   ["projects", "list featured projects"],
-  ["open <slug>", "open a project's live URL (fibreconnect | tt-kpi | costalina)"],
+  ["open <slug>", "open a project's live URL (inbox-copilot | fibreconnect | tt-kpi | costalina)"],
   ["skills", "tech I work with"],
   ["contact", "email, LinkedIn, location"],
   ["github", "open my GitHub profile"],

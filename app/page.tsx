@@ -362,7 +362,7 @@ function Stack() {
             Tools I have actually shipped with
           </h2>
           <p className="max-w-prose text-muted">
-            Everything here appears in one of the three projects above, not on a
+            Everything here appears in one of the projects above, not on a
             course syllabus.
           </p>
         </div>
